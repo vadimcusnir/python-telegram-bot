@@ -1,25 +1,37 @@
-from bot.handlers.index import index
-from bot.handlers.review import review
-from bot.handlers.notadoi import notadoi
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
+from telegram.ext import ApplicationBuilder
+from handlers.basic import register_basic_handlers
+from handlers.subscribe import register_abonare_handler
 
-# Încarcă variabilele din .env (inclusiv TOKEN-ul)
 load_dotenv()
-TOKEN = os.getenv("TOKEN")
+TOKEN = os.getenv("BOT_TOKEN")
+WEBHOOK_URL = os.getenv("WEBHOOK_URL")
 
-def main():
-    updater = Updater(TOKEN)
-    dp = updater.dispatcher
-    # Comenzi clasice (ex: /start, /notadoi)
-    for k, v in index().items():
-        dp.add_handler(CommandHandler(k, v))
-    # Handler pentru textul de la butoane din meniu
-    dp.add_handler(MessageHandler(Filters.regex(r"^Nota Doi$"), notadoi))
-    dp.add_handler(MessageHandler(Filters.regex(r"^Scrie Recenzie$"), review))
-    updater.start_polling()
-    updater.idle()
+app = ApplicationBuilder().token(TOKEN).build()
+print("👂 Listening on:", WEBHOOK_URL)
+
+register_basic_handlers(app)
+register_abonare_handler(app, WEBHOOK_URL)
+
+
+async def run_webhook():
+    print("🚀 Pornit în mod WEBHOOK")
+    await app.initialize()
+    await app.start()
+    await app.updater.start_webhook(
+        listen="0.0.0.0",
+        port=8000,
+        url_path="/webhook",
+        webhook_url=WEBHOOK_URL,
+    )
+    print("🌐 Webhook activ. Railway blocat.")
+    import asyncio
+
+    await asyncio.Event().wait()
+
 
 if __name__ == "__main__":
-    main()
+    import asyncio
+
+    asyncio.run(run_webhook())

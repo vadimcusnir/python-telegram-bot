@@ -1,29 +1,20 @@
-"""
-index.py
----------
-index all function handlers
-"""
+# index.py – Înregistrează comenzile /start și /help
 
-# imports here -----------------------
+from telegram.ext import CommandHandler
+from .start import start, help_message
+
+from telegram.ext import CommandHandler
 from .start import start
-from .echo import echo
-from .help import help_command
-from .hello import hello
-from .whoami import whoami
-from .notadoi import notadoi
+from .start import help_message
 
-command_map = {
-    'start': start,
-    'echo': echo,
-    'whoami': whoami,
-    'hello': hello,
-    'help': help_command,
-    'notadoi': notadoi,
-}
+def get_index_handlers():
+    return [
+        CommandHandler("start", start),
+        CommandHandler("help", help_message)
+    ]
 
-# --------------------------------------
 def index():
-    """
-    Return the map of all command handlers
-    """
-    return command_map
+    return {
+        "start": CommandHandler("start", start),
+        "help": CommandHandler("help", help_message)
+    }
