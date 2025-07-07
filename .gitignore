@@ -6,3 +6,5 @@ venv/
 __pycache__/
 *.pyc
 .env
+quick_test.py
+set_webhook.py
