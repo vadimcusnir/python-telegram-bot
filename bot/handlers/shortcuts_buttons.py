@@ -1,9 +1,9 @@
 from telegram.ext import MessageHandler, filters
-from bot.handlers.review import review
-from bot.handlers.notadoi import notadoi
-from bot.handlers.contact import contact
-from bot.handlers.public_gpts import public_gpts
-from bot.handlers.diagnostic import start_diagnostic
+from handlers.review import review
+from handlers.notadoi import notadoi
+from handlers.contact import contact
+from handlers.public_gpts import public_gpts
+from handlers.diagnostic import start_diagnostic
 
 def get_shortcut_handlers():
     return [

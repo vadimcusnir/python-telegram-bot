@@ -1,6 +1,6 @@
 from telegram import Update
 from telegram.ext import ContextTypes
-from bot.utils.menu import get_main_menu
+from utils.menu import get_main_menu
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     reply_markup = get_main_menu()

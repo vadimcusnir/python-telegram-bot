@@ -1,7 +1,7 @@
 from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ConversationHandler, ContextTypes
-from bot.utils.sheets_webhook import send_to_sheets
-from bot.utils.menu import get_main_menu
+from utils.sheets_webhook import send_to_sheets
+from utils.menu import get_main_menu
 from datetime import datetime
 import logging
 

@@ -7,7 +7,7 @@ from telegram.ext import (
     ConversationHandler,
     filters,
 )
-from bot.config import EMAIL_PATTERN, WEBHOOK_URL
+from config import EMAIL_PATTERN, WEBHOOK_URL
 
 EMAIL = range(1)
 
