@@ -1,6 +1,5 @@
 # bot/handlers/basic.py
-from telegram import Update, ReplyKeyboardMarkup
-from telegram.ext import ContextTypes
+from telegram.ext import CommandHandler
 
 keyboard = ReplyKeyboardMarkup(
     [["🔍 Despre Vadim", "🎓 Servicii"], ["🤖 GPT Tool", "📩 Contact"]],
@@ -30,10 +29,6 @@ async def servicii(update, context):
 async def contact(update, context):
     await update.message.reply_text("Contact: vadim.kusnir@gmail.com sau @vadimcusnir")
 
-
-def register_basic_handlers(app):
-
-from telegram.ext import CommandHandler
 
 def register_basic_handlers(app):
     app.add_handler(CommandHandler("start", start))
