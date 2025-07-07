@@ -29,3 +29,7 @@ async def servicii(update, context):
 
 async def contact(update, context):
     await update.message.reply_text("Contact: vadim.kusnir@gmail.com sau @vadimcusnir")
+
+
+def register_basic_handlers(app):
+    return register_handlers(app)
