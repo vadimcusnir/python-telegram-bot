@@ -18,11 +18,11 @@ register_basic_handlers(app_tg)
 app = FastAPI()
 
 @app.on_event("startup")
-async def _startup():
-    await app_tg.initialize()
-    await app_tg.start()
-    # buclă care menține Railway activ dacă Telegram nu trimite nimic
+async def on_start():
+    await application.initialize()
+    await application.start()
     asyncio.create_task(_keep_alive())
+
 async def _keep_alive():
     while True:
         await asyncio.sleep(60)
@@ -33,15 +33,17 @@ async def on_stop():
     await app_tg.shutdown()
 
 @app.get("/")
-async def root():
+async def health():
     return {"status": "alive"}
 
 @app.post("/webhook")
 async def telegram_webhook(req: Request):
     try:
         data = await req.json()
-        update = Update.de_json(data, bot)
-        asyncio.create_task(application.process_update(update))  # ↝ NON-BLOCKING
+        update = Update.de_json(data, application.bot)
+        asyncio.create_task(application.process_update(update))
+        print("[WEBHOOK] Update accepted.")
     except Exception as e:
         print("[WEBHOOK‑ERROR]", e)
-    return {"ok": True}  # ↝ răspuns instant
+    return {"ok": True}
+
