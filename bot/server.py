@@ -1,5 +1,5 @@
-# bot/server.py
 import os, asyncio
+import asyncio
 from pathlib import Path
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
@@ -11,39 +11,36 @@ load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 TOKEN = os.getenv("BOT_TOKEN")
 bot = Bot(TOKEN)
 
-# ───── PTB app ───────────────────────────────────────────
-application = ApplicationBuilder().token(TOKEN).build()
+app_tg = ApplicationBuilder().token(TOKEN).build()
 from bot.handlers.basic import register_basic_handlers
-register_basic_handlers(application)
+register_basic_handlers(app_tg)
 
-# ───── FastAPI app ───────────────────────────────────────
 app = FastAPI()
 
-# ↻ inițializează PTB la pornirea serverului
 @app.on_event("startup")
 async def _startup():
-    await application.initialize()
-    await application.start()
+    await app_tg.initialize()
+    await app_tg.start()
+    # buclă care menține Railway activ dacă Telegram nu trimite nimic
+    asyncio.create_task(_keep_alive())
+async def _keep_alive():
+    while True:
+        await asyncio.sleep(60)
 
-# ↻ oprește‑l curat la shutdown (evită crash după câteva secunde)
 @app.on_event("shutdown")
-async def _shutdown():
-    await application.stop()
-    await application.shutdown()
+async def on_stop():
+    await app_tg.stop()
+    await app_tg.shutdown()
 
-# health‑check pentru Railway (GET /)
 @app.get("/")
 async def root():
     return {"status": "alive"}
 
-# endpoint real pentru Telegram
 @app.post("/webhook")
-async def telegram_webhook(req: Request):
-    data = await req.json()
-    update = Update.de_json(data, bot)
-    # nu lăsa excepțiile să termine requestul
+async def hook(req: Request):
+    update = Update.de_json(await req.json(), bot)
     try:
-        await application.process_update(update)
+        await app_tg.process_update(update)
     except Exception as e:
-        print("[WEBHOOK‑ERROR]", e)
+        print("WEBHOOK‑ERROR:", e)
     return {"ok": True}
