@@ -37,10 +37,11 @@ async def root():
     return {"status": "alive"}
 
 @app.post("/webhook")
-async def hook(req: Request):
-    update = Update.de_json(await req.json(), bot)
+async def telegram_webhook(req: Request):
     try:
-        await app_tg.process_update(update)
+        data = await req.json()
+        update = Update.de_json(data, bot)
+        asyncio.create_task(application.process_update(update))  # ↝ NON-BLOCKING
     except Exception as e:
-        print("WEBHOOK‑ERROR:", e)
-    return {"ok": True}
+        print("[WEBHOOK‑ERROR]", e)
+    return {"ok": True}  # ↝ răspuns instant
