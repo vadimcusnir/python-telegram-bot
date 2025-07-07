@@ -32,4 +32,11 @@ async def contact(update, context):
 
 
 def register_basic_handlers(app):
-    return register_handlers(app)
+
+from telegram.ext import CommandHandler
+
+def register_basic_handlers(app):
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("despre", despre))
+    app.add_handler(CommandHandler("servicii", servicii))
+    app.add_handler(CommandHandler("contact", contact))

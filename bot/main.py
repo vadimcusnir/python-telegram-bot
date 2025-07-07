@@ -1,8 +1,8 @@
 import os
 from dotenv import load_dotenv
 from telegram.ext import ApplicationBuilder
-from handlers.basic import register_basic_handlers
-from handlers.subscribe import register_abonare_handler
+from bot.handlers.basic import register_basic_handlers
+from bot.handlers.subscribe import register_abonare_handler
 
 load_dotenv()
 TOKEN = os.getenv("BOT_TOKEN")
@@ -35,3 +35,10 @@ if __name__ == "__main__":
     import asyncio
 
     asyncio.run(run_webhook())
+# înainte
+from bot.handlers.basic import register_basic_handlers
+from bot.handlers.subscribe import register_abonare_handler
+# după
+from bot.handlers.basic import register_basic_handlers
+from bot.handlers.subscribe import register_abonare_handler
+
