@@ -1,7 +1,7 @@
 from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import ConversationHandler, ContextTypes
-from utils.sheets_webhook import send_to_sheets
-from utils.menu import get_main_menu
+from telegram.ext import CommandHandler
+from bot.utils.sheets_webhook import send_to_sheets
+from bot.utils.menu import get_main_menu
 from datetime import datetime
 import logging
 
@@ -89,6 +89,12 @@ async def final_result(update: Update, context: ContextTypes.DEFAULT_TYPE) -> in
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     await update.message.reply_text("Diagnosticul a fost oprit.", reply_markup=ReplyKeyboardRemove())
     return ConversationHandler.END
+
+async def diagnostic(update, context):
+    await update.message.reply_text("Sistem diagnostic: OK")
+
+def register_diagnostic_handlers(app):
+    app.add_handler(CommandHandler("diagnostic", diagnostic))
 
 async def q1(update, context): return await handle_question(update, context, Q1)
 async def q2(update, context): return await handle_question(update, context, Q2)
