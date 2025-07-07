@@ -170,3 +170,4 @@ from handlers.index import index
 
 [Read More...](bot/handlers/README.md)# force deploy
 # deploy trigger
+# redeploy now
