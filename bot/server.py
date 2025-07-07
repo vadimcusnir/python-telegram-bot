@@ -11,9 +11,9 @@ load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 TOKEN = os.getenv("BOT_TOKEN")
 bot = Bot(TOKEN)
 
-app_tg = ApplicationBuilder().token(TOKEN).build()
+application = ApplicationBuilder().token(TOKEN).build()
 from bot.handlers.basic import register_basic_handlers
-register_basic_handlers(app_tg)
+register_basic_handlers(application)
 
 app = FastAPI()
 
@@ -21,7 +21,6 @@ app = FastAPI()
 async def on_start():
     await application.initialize()
     await application.start()
-    asyncio.create_task(_keep_alive())
 
 async def _keep_alive():
     while True:
