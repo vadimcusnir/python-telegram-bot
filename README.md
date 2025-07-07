@@ -168,4 +168,4 @@ All command handlers are put in one directory `handlers` and registered in one f
 from handlers.index import index
 ```
 
-[Read More...](bot/handlers/README.md)
+[Read More...](bot/handlers/README.md)# force deploy
