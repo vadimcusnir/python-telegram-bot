@@ -2,3 +2,4 @@ python-telegram-bot[webhooks]==20.6
 python-dotenv
 requests
 uvicorn
+fastapipython-dotenv==1.1.1
